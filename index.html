@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Random Quote Generator</title>
+    <style>
+      body {
+        box-sizing: border-box;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+      }
+      .quote {
+        margin: auto;
+        width: 75%;
+        font-size: xx-large;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="quote">A random quote - Author</div>
+    <script text="type/javascript" defer>
+      const eventSource = new EventSource("/quotes");
+      const quoteBox = document.querySelector(".quote");
+
+      eventSource.addEventListener("message", function (event) {
+        quoteBox.textContent = event.data;
+      });
+    </script>
+  </body>
+</html>
