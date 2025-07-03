@@ -1,3 +1,2 @@
-Dockerfile
-fly.toml
 .idea
+builds/*

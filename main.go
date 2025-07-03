@@ -3,9 +3,11 @@ package main
 import (
 	"embed"
 	"fmt"
+	"github.com/joho/godotenv"
 	"io/fs"
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -116,14 +118,22 @@ var quotes = []string{
 var index embed.FS
 
 func main() {
+	_ = godotenv.Load()
+	port := os.Getenv("PORT_GO_SSE_TUTORIAL")
+	if port == "" {
+		log.Fatal("PORT_GO_SSE_TUTORIAL environment variable is required.")
+	}
+	addr := "localhost:" + port
+
 	indexFS, _ := fs.Sub(index, ".")
+
 	http.Handle("/", http.FileServer(http.FS(indexFS)))
 	http.HandleFunc("/quotes", eventsHandler)
 
-	log.Println("Server listening on http://localhost:" + PORT)
-	err := http.ListenAndServe(":"+PORT, nil)
+	log.Println("Server listening on http://" + addr)
+	err := http.ListenAndServe(addr, nil)
 	if err != nil {
-		log.Fatal("error starting server on port " + PORT)
+		log.Fatal("error starting server at " + addr)
 	}
 }
 
